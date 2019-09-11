@@ -8,6 +8,7 @@ from scenedetect.scene_manager import SceneManager
 from scenedetect.frame_timecode import FrameTimecode
 from scenedetect.stats_manager import StatsManager
 from scenedetect.detectors import ContentDetector
+# from scenedetect.video_splitter import VideoSplitter
 
 # def splice_video(filepath, badgery):
 #     print(filepath)
@@ -54,18 +55,20 @@ def splice_video(video_path):
         scene_list = scene_manager.get_scene_list(base_timecode)
         # Each scene is a tuple of (start, end) FrameTimecodes.
 
-        print('List of scenes obtained:')
-        for i, scene in enumerate(scene_list):
-            print(
-                'Scene %2d: Start %s / Frame %d, End %s / Frame %d' % (
-                i+1,
-                scene[0].get_timecode(), scene[0].get_frames(),
-                scene[1].get_timecode(), scene[1].get_frames(),))
+        scenedetect.video_splitter.split_video_mkvmerge(str(video_path), scene_list, "badger", "tests", suppress_output=False)
 
-        # We only write to the stats file if a save is required:
-        if stats_manager.is_save_required():
-            with open(stats_file_path, 'w') as stats_file:
-                stats_manager.save_to_csv(stats_file, base_timecode)
+        # print('List of scenes obtained:')
+        # for i, scene in enumerate(scene_list):
+        #     print(
+        #         'Scene %2d: Start %s / Frame %d, End %s / Frame %d' % (
+        #         i+1,
+        #         scene[0].get_timecode(), scene[0].get_frames(),
+        #         scene[1].get_timecode(), scene[1].get_frames(),))
+
+        # # We only write to the stats file if a save is required:
+        # if stats_manager.is_save_required():
+        #     with open(stats_file_path, 'w') as stats_file:
+        #         stats_manager.save_to_csv(stats_file, base_timecode)
 
     finally:
         video_manager.release()

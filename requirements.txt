@@ -1,4 +1,3 @@
 opencv-python
 progress_bar
-Flask
-scenedetect[opencv,progress_bar]
+./PySceneDetect
