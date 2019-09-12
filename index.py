@@ -55,7 +55,7 @@ def splice_video(video_path):
         scene_list = scene_manager.get_scene_list(base_timecode)
         # Each scene is a tuple of (start, end) FrameTimecodes.
 
-        scenedetect.video_splitter.split_video_mkvmerge(str(video_path), scene_list, "badger", "tests", suppress_output=False)
+        scenedetect.video_splitter.split_video_mkvmerge([video_path], scene_list, "badger", "tests", suppress_output=False)
 
         # print('List of scenes obtained:')
         # for i, scene in enumerate(scene_list):
