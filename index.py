@@ -2,6 +2,7 @@ import argparse
 import scenedetect
 import os
 import sys
+import json
 
 from scenedetect.video_manager import VideoManager
 from scenedetect.scene_manager import SceneManager
@@ -17,11 +18,13 @@ from scenedetect.detectors import ContentDetector
 #         print("||")
 #         print(badgery)
 
+def map_timecodes(timecode_item):
+    return [timecode_item[0].get_timecode(), timecode_item[1].get_timecode()]
+
 def splice_video(video_path):
-    print(video_path)
-    # type: (str) -> List[Tuple[FrameTimecode, FrameTimecode]]
     video_manager = VideoManager([video_path])
     stats_manager = StatsManager()
+
     # Construct our SceneManager and pass it our StatsManager.
     scene_manager = SceneManager(stats_manager)
 
@@ -30,18 +33,9 @@ def splice_video(video_path):
     scene_manager.add_detector(ContentDetector())
     base_timecode = video_manager.get_base_timecode()
 
-    # We save our stats file to {VIDEO_PATH}.stats.csv.
-    stats_file_path = '%s.stats.csv' % video_path
-
     scene_list = []
 
     try:
-        # If stats file exists, load it.
-        if os.path.exists(stats_file_path):
-            # Read stats from CSV file opened in read mode:
-            with open(stats_file_path, 'r') as stats_file:
-                stats_manager.load_from_csv(stats_file, base_timecode)
-
         # Set downscale factor to improve processing speed.
         video_manager.set_downscale_factor()
 
@@ -54,22 +48,14 @@ def splice_video(video_path):
         # Obtain list of detected scenes.
         scene_list = scene_manager.get_scene_list(base_timecode)
         # Each scene is a tuple of (start, end) FrameTimecodes.
+        
+        # Output the edited vids.
+        scenedetect.video_splitter.split_video_mkvmerge([video_path], scene_list, "tmp", "tmp-movie", suppress_output=False)
 
-        scenedetect.video_splitter.split_video_mkvmerge([video_path], scene_list, "badger", "tests", suppress_output=False)
+        mapped_scene_list = map(map_timecodes, scene_list)
+        json_scene_list = json.dumps(list(mapped_scene_list))
 
-        # print('List of scenes obtained:')
-        # for i, scene in enumerate(scene_list):
-        #     print(
-        #         'Scene %2d: Start %s / Frame %d, End %s / Frame %d' % (
-        #         i+1,
-        #         scene[0].get_timecode(), scene[0].get_frames(),
-        #         scene[1].get_timecode(), scene[1].get_frames(),))
-
-        # # We only write to the stats file if a save is required:
-        # if stats_manager.is_save_required():
-        #     with open(stats_file_path, 'w') as stats_file:
-        #         stats_manager.save_to_csv(stats_file, base_timecode)
-
+        print(json_scene_list)
     finally:
         video_manager.release()
 
@@ -78,7 +64,7 @@ def splice_video(video_path):
 parser = argparse.ArgumentParser()
 
 parser.add_argument("file", type=str, help="Video file to edit.")
-parser.add_argument("--badgery", help="Extra badgery.", action="store_true")
+parser.add_argument("--badgery", help="Extra badgery.", action="store_true") # Test option.
 args = parser.parse_args()
 
 # Run the appropriate function (in this case showtop20 or listapps)
