@@ -1,4 +1,7 @@
 opencv-python
 progress_bar
 scenedetect
+tensorflow
+keras
+pillow
 git+https://github.com/GantMan/nsfw_model.git

@@ -1,0 +1,3 @@
+# Notes...
+
+- Using PyInstaller to create .exe `pyinstaller --onefile index.py / whatever.py`
