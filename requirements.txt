@@ -1,3 +1,4 @@
 opencv-python
 progress_bar
 scenedetect
+git+https://github.com/GantMan/nsfw_model.git
