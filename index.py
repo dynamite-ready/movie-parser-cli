@@ -15,23 +15,30 @@ from scenedetect.detectors import ContentDetector
 def map_timecodes(timecode_item):
     return [timecode_item[0].get_timecode(), timecode_item[1].get_timecode()]
 
-def get_images(video_path):
+def get_images(video_path, nth):
     # Opens the Video file
     # Will obviously be done in a separate function...
     cap = cv2.VideoCapture(video_path)
+
     i = 0
-    print(cap.isOpened())
+    k = 0
 
     while(cap.isOpened()):
         ret, frame = cap.read()
-        if ret == False: break
-        cv2.imwrite('tmp-img-' + str(i) + '.jpg', frame)
+        
+        if(ret == False): break
+        if((i % nth) == 0):
+            # Only parse every 5 frame (make this tuneable, obvs).
+            cv2.imwrite('tmp-img-' + str(k) + '.jpg', frame)
+            k += 1
+        
         i += 1
 
     cap.release()
     cv2.destroyAllWindows()    
 
 def splice_video(video_path):
+    print("EEEEEKKKKK")
     video_manager = VideoManager([video_path])
     stats_manager = StatsManager()
 
@@ -74,15 +81,16 @@ def splice_video(video_path):
 parser = argparse.ArgumentParser()
 
 parser.add_argument("file", type=str, help="Video file to edit.")
-parser.add_argument("--badgery", help="Extra badgery.") # Test option.
+parser.add_argument("--nth", help="Extra badgery.") # Test option.
 parser.add_argument("--images", help="Extract images from video.") # Test option.
 args = parser.parse_args()
 
 # Run the appropriate function (in this case showtop20 or listapps)
 if(args.file and args.images):
-    get_images(args.file)
-elif(args.file):
+    get_images(args.file, 5)
+if(args.file and args.images and args.nth):
+    get_images(args.file, args.nth)
+elif(args.file and not args.images and not args.nth):
     splice_video(args.file)
-    
-
-# splice_video(args.file)
+elif(not args.images and not args.nth):
+    splice_video(args.file)
