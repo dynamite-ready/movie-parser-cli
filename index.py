@@ -38,7 +38,6 @@ def get_images(video_path, nth):
     cv2.destroyAllWindows()    
 
 def splice_video(video_path):
-    print("EEEEEKKKKK")
     video_manager = VideoManager([video_path])
     stats_manager = StatsManager()
 
