@@ -17,7 +17,6 @@ def map_timecodes(timecode_item):
 
 def get_images(video_path, nth):
     # Opens the Video file
-    # Will obviously be done in a separate function...
     cap = cv2.VideoCapture(video_path)
 
     i = 0
@@ -80,14 +79,13 @@ def splice_video(video_path):
 parser = argparse.ArgumentParser()
 
 parser.add_argument("file", type=str, help="Video file to edit.")
-parser.add_argument("--nth", help="Extra badgery.") # Test option.
-parser.add_argument("--images", help="Extract images from video.") # Test option.
+parser.add_argument("--nth", help="Number of frames to skip, when extracting images.") # Test option.
+parser.add_argument("--images", help="Extract images from video.")
 args = parser.parse_args()
 
-# Run the appropriate function (in this case showtop20 or listapps)
 if(args.file and args.images):
     get_images(args.file, 5)
-if(args.file and args.images and args.nth):
+elif(args.file and args.images and args.nth):
     get_images(args.file, args.nth)
 elif(args.file and not args.images and not args.nth):
     splice_video(args.file)
