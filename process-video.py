@@ -15,7 +15,12 @@ from scenedetect.detectors import ContentDetector
 def map_timecodes(timecode_item):
     return [timecode_item[0].get_timecode(), timecode_item[1].get_timecode()]
 
-def get_images(video_path, nth):
+def get_images(video_path, nth, folder):
+    print(folder)
+    print(nth)
+
+    os.mkdir(folder)
+
     # Opens the Video file
     cap = cv2.VideoCapture(video_path)
 
@@ -28,7 +33,7 @@ def get_images(video_path, nth):
         if(ret == False): break
         if((i % nth) == 0):
             # Only parse every 5 frame (make this tuneable, obvs).
-            cv2.imwrite('tmp-img-' + str(k) + '.jpg', frame)
+            cv2.imwrite(folder + 'tmp-img-' + str(k) + '.jpg', frame)
             k += 1
         
         i += 1
@@ -79,15 +84,12 @@ def splice_video(video_path):
 parser = argparse.ArgumentParser()
 
 parser.add_argument("file", type=str, help="Video file to edit.")
-parser.add_argument("--nth", help="Number of frames to skip, when extracting images.") # Test option.
 parser.add_argument("--images", help="Extract images from video.")
+parser.add_argument("--nth", help="Number of frames to skip, when extracting images.", nargs='?', const=5, type=int, default=5) # Test option.
+parser.add_argument("--ifolder", help="Folder in which to place derived images.", nargs='?', const="./tmp/", type=str, default="./tmp/")
 args = parser.parse_args()
 
 if(args.file and args.images):
-    get_images(args.file, 5)
-elif(args.file and args.images and args.nth):
-    get_images(args.file, args.nth)
-elif(args.file and not args.images and not args.nth):
-    splice_video(args.file)
-elif(not args.images and not args.nth):
+    get_images(args.file, args.nth, args.ifolder)
+elif(not args.images):
     splice_video(args.file)
