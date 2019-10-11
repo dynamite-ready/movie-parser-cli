@@ -16,13 +16,12 @@ def map_timecodes(timecode_item):
     return [timecode_item[0].get_timecode(), timecode_item[1].get_timecode()]
 
 def get_images(video_path, nth, folder):
-    print(folder)
-    print(nth)
-
     os.mkdir(folder)
 
     # Opens the Video file
     cap = cv2.VideoCapture(video_path)
+
+    image_file_list = []
 
     i = 0
     k = 0
@@ -32,14 +31,22 @@ def get_images(video_path, nth, folder):
         
         if(ret == False): break
         if((i % nth) == 0):
+            # imagefile name
+            image_file_name = folder + 'tmp-img-' + str(k) + '.jpg'
             # Only parse every 5 frame (make this tuneable, obvs).
-            cv2.imwrite(folder + 'tmp-img-' + str(k) + '.jpg', frame)
+            cv2.imwrite(image_file_name, frame)
+            image_file_list.append(image_file_name)
             k += 1
         
         i += 1
 
     cap.release()
-    cv2.destroyAllWindows()    
+    cv2.destroyAllWindows()
+
+    final_image_list = json.dumps(image_file_list)
+
+    # This function probably should return a list of filenames.
+    print(final_image_list)
 
 def splice_video(video_path):
     video_manager = VideoManager([video_path])
