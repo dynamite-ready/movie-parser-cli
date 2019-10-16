@@ -1,2 +1,2 @@
-pyinstaller --onefile process-video.py
-pyinstaller --onefile evaluate-images.py
+py -m PyInstaller --onefile process-video.py
+py -m PyInstaller --onefile test.py
