@@ -52,9 +52,10 @@ def predict_image(image):
         image_tensor.cuda()
 
     input = Variable(image_tensor)
+    
     output = model(input)
     index = output.data.numpy().argmax()
-    return index
+    return [index, output.data[0][index].item()]
 
 def evaluate_images(folder):
     # Classes = [0 - 'drawings', 1 - 'hentai', 2 - 'neutral', 3 - 'porn', 4 - 'sexy']
@@ -63,21 +64,22 @@ def evaluate_images(folder):
     entries = os.listdir(folder)
 
     i = 0
-    is_flagged = "false"
+
+    # The initial number should be 
+    magnitude = -1
 
     for entry in entries:
-        i+=1
+        i += 1
         image = Image.open(folder + entry)
         
         # Prediction...
         index = predict_image(image)
         
         # If the image is smut (based on the classes above)...
-        if(index == 1 or index == 3 or index == 4):
-            is_flagged = "true"
-            break
+        if((index[0] == 1 or index[0] == 3 or index[0] == 4) and index[1] > magnitude):
+            magnitude = index[1]
 
-    print(is_flagged)
+    print(magnitude)
 
 
 parser = argparse.ArgumentParser()
