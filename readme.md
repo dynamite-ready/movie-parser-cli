@@ -1,4 +1,10 @@
-# Notes...
+# Movie Parse CLI
+
+A command line application which takes a video filepath as an input, and determines which frames in the video file are NSFW.
+It's based on this Pytorch model - https://github.com/emiliantolo/pytorch_nsfw_model and also uses the PySceneDetect project heavily - https://github.com/dynamite-ready/PySceneDetect. Is used as a component of the Movie Parse project - https://github.com/dynamite-ready/movie-parser
+
+
+## Notes...
 
 - Using PyInstaller to create .exe `pyinstaller --onefile index.py / whatever.py`
 - `index.py` will split videos into scenes / shots, and also split a video into jpgs
