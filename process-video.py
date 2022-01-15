@@ -10,7 +10,7 @@ from scenedetect.scene_manager import SceneManager
 from scenedetect.frame_timecode import FrameTimecode
 from scenedetect.stats_manager import StatsManager
 from scenedetect.detectors import ContentDetector
-# from scenedetect.video_splitter import VideoSplitter
+from scenedetect import video_splitter
 
 def map_timecodes(timecode_item):
     return [timecode_item[0].get_timecode(), timecode_item[1].get_timecode()]

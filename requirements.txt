@@ -3,7 +3,7 @@ progress_bar
 scenedetect
 keras
 pillow
-torch===1.3.0+cpu
-torchvision===0.2.2.post3
+torch===1.9.0+cpu
+torchvision===0.10.0+cpu
 numpy
 git+https://github.com/GantMan/nsfw_model.git
