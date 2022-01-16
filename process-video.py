@@ -91,7 +91,7 @@ def splice_video(video_path):
 parser = argparse.ArgumentParser()
 
 parser.add_argument("file", type=str, help="Video file to edit.")
-parser.add_argument("--images", help="Extract images from video.")
+parser.add_argument("--images", help="Extract images from video.", action='store_true')
 parser.add_argument("--nth", help="Number of frames to skip, when extracting images.", nargs='?', const=5, type=int, default=5) # Test option.
 parser.add_argument("--ifolder", help="Folder in which to place derived images.", nargs='?', const="./tmp/", type=str, default="./tmp/")
 args = parser.parse_args()
