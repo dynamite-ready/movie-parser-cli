@@ -2,4 +2,5 @@
 /dist
 /__pycache__
 *.spec
-tmp
+tmp*
+temporary

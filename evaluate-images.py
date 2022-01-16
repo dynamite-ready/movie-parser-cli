@@ -36,7 +36,7 @@ model.fc = nn.Sequential(
 )
 
 # Load the pretrained weights...
-model.load_state_dict(torch.load(os.getcwd() + '/ResNet50_nsfw_model.pth', map_location=torch.device('cpu')))
+model.load_state_dict(torch.load('./ResNet50_nsfw_model.pth', map_location=torch.device('cpu')))
 
 # Start the chainsaw...
 model.eval()
