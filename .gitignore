@@ -4,3 +4,4 @@
 *.spec
 tmp*
 temporary
+/test-images
