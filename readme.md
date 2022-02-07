@@ -6,6 +6,8 @@ An pair of CLI apps written in Python.
 
 - `evaluate-images.py` - Takes a folder of image files, and will determine which of them are NSFW. It's based on ResNet50NSFW - https://github.com/emiliantolo/pytorch_nsfw_model
 
+You can find more information at - https://raskie.com/post/practical-ai-autodetecting-nsfw
+
 ## 1: Dependencies
 
 First and foremost, this is a Python repo, so you will need to install it if you don't already have it. The program(s) should build on both Python 2 & 3, but I would recommend version 3 - https://www.python.org/downloads/
