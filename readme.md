@@ -2,9 +2,9 @@
 
 An pair of CLI apps written in Python. 
 
-- `process-video.py` - Can split a video into small video files, based on the camera changes found in the movie upload. It can also take an individual movie file, capture it's frames, and save them as `.jpg`. Uses the PySceneDetect heavily - https://github.com/dynamite-ready/PySceneDetect.
+- `process-video.py` - Can split a video into small video files, based on the camera changes found in the movie upload. It can also take an individual movie file, capture it's frames, and save them as `.jpg`. Uses the PySceneDetect library heavily - https://github.com/dynamite-ready/PySceneDetect.
 
-- `evaluate-images.py` - Takes a folder of image files, and will determine which of them are NSFW. It's based on ResNet50NSFW - https://github.com/emiliantolo/pytorch_nsfw_model
+- `evaluate-images.py` - Takes a folder of image files, and will determine which of them are NSFW. It's based on ResNet50_NSFW - https://github.com/emiliantolo/pytorch_nsfw_model
 
 You can find more information at - https://raskie.com/post/practical-ai-autodetecting-nsfw
 
@@ -15,7 +15,7 @@ First and foremost, this is a Python repo, so you will need to install it if you
 If you want to build the standalone CLI executables, you will also need to install PyInstaller separately. You can install it with:
 
 ```
-`pip install pyinstaller`
+pip install pyinstaller
 
 ```
 
@@ -31,7 +31,7 @@ A list of all dependent Python modules can be found in `requirements.txt`.
 To install the app, you should be able to use the following command:
 
 ```
-`python -m pip install -r requirements.txt -f https://download.pytorch.org/whl/torch_stable.html`
+python -m pip install -r requirements.txt -f https://download.pytorch.org/whl/torch_stable.html
 
 ```
 
@@ -76,4 +76,4 @@ You will need to install PyInstaller to run it (see the `dependencies` section).
 
 - CUDA PyTorch would have been nice, but it's a bloated brick of code
 - Take care with the size of the files and folders you want to process
-- Is tightly coupled to my Movie Parser GUI project - https://github.com/dynamite-ready/movie-parser-cli
+- Is tightly coupled to my Movie Parser GUI project - https://github.com/dynamite-ready/movie-parser
