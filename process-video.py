@@ -100,7 +100,7 @@ def split_video(video_path):
   # Now we need to add a `Detector` to the `SceneManager`.
   # The `SceneManager.detectors` module contains two 'detectors'.
   # The `ContentDetector` is the fancy one.
-  scene_manager.add_detector(ContentDetector())
+  scene_manager.add_detector(ContentDetector(threshold=27.0))
   base_timecode = video_manager.get_base_timecode() # Start from 00:00:00
 
   # Just like the `get_images` function, I want to end the routine by printing out
