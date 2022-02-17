@@ -86,30 +86,20 @@ def get_images(video_path, output_path, nth_frame):
 # This function makes heavy use of SceneDetect to split a larger
 # video into smaller ones, based on scene transitions and camera switches.
 def split_video(video_path):
-  # SceneDetect has a highly modular API, which makes some sense, 
-  # but isn't entirely intuitive (especially when compared) to
-  # how simple `get_images` seemed to be.
-  # The VideoManager works a bit like `cv2.VideoCapture`.
-  # It reads the video file, but can also split multiple video
+  # SceneDetect has a highly modular API. This hack uses version 0.5.*,
+  # so there's a good chance that some of these comments won't
+  # apply to version 0.6.*+. The VideoManager works a bit like `cv2.VideoCapture`.
+  # It reads the video file, but can also split multiple videos
   # concurrently. For this program, we only need to split a single vid.
   video_manager = VideoManager([video_path])
 
-  # The `StatsManager` generates metadata for the videos being processed.
-  # It feels like this should be an addendum to the `VideoManager` 
-  # or a side effect of it, but here it is...
-  stats_manager = StatsManager()
-
   # Now we need a `SceneManager`... The SceneManager class/module contains methods
-  # that do the actual scene detection. By 'injecting' a `StatsManager` into it,
-  # `SceneManager` can push the data to the `StatsManager` to track.
-  # At this stage, I'm wishing for less granularity. But it is what it is.
-  scene_manager = SceneManager(stats_manager)
+  # that do the actual scene detection.
+  scene_manager = SceneManager()
 
   # Now we need to add a `Detector` to the `SceneManager`.
   # The `SceneManager.detectors` module contains two 'detectors'.
   # The `ContentDetector` is the fancy one.
-  # Like the `StatsManager` gripe above, it would have be nice if this was
-  # implicitly called, instead of having to do this.
   scene_manager.add_detector(ContentDetector())
   base_timecode = video_manager.get_base_timecode() # Start from 00:00:00
 
@@ -124,17 +114,14 @@ def split_video(video_path):
     # downscale_factor works like the `nth_frame` feature that I
     # use in `get_images`. You can give it an explicit value, but
     # if no argument is set, there's a fancy algorithm that automatically
-    # manages frame skipping and optimisation. I'll admit, this line
-    # confused me, until I read the docs.
+    # manages frame skipping and optimisation.
     video_manager.set_downscale_factor()
 
-    video_manager.start() # Finally, semantics!
+    video_manager.start()
 
-    # More dependency injection. Here, we take the `video_manager`
-    # which we had constructed with the path to our `video_path`, and
-    # hand it to the `SceneManager` to actually detect shit.
-    # I would honestly have much preferred something like:
-    # `split_video = SceneDetect(video_path, output_path)`
+    # Here, we take the `video_manager`which we had constructed 
+    # with the path to our `video_path`, and hand it to the `SceneManager` 
+    # to actually detect scenes.
     scene_manager.detect_scenes(frame_source=video_manager)
 
     # This is nice. `scene_manager.get_scene_list` returns an array.
